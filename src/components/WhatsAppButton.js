@@ -12,19 +12,20 @@ export function WhatsAppIcon({ className = "" }) {
   );
 }
 
-export default function WhatsAppButton({ className = "" }) {
+export default function WhatsAppButton({ className = "", iconOnly = false }) {
   return (
     <a
       href={WHATSAPP_URL}
+      aria-label="Chat on WhatsApp"
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex items-center gap-2.5 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-whatsapp/30 transition-all hover:-translate-y-0.5 hover:bg-whatsapp-dark hover:shadow-lg ${className}`}
+      className={`group inline-flex items-center gap-2.5 rounded-full bg-whatsapp ${iconOnly ? "h-14 w-14 justify-center" : "px-5 py-2.5"} text-sm font-semibold text-white shadow-md shadow-whatsapp/30 transition-all hover:-translate-y-0.5 hover:bg-whatsapp-dark hover:shadow-lg ${className}`}
     >
       <span className="relative flex h-6 w-6 items-center justify-center">
         <span className="wa-pulse absolute inset-0 rounded-full bg-white/60" />
         <WhatsAppIcon className="wa-icon relative h-6 w-6" />
       </span>
-      Chat on WhatsApp
+      {!iconOnly && "Chat on WhatsApp"}
     </a>
   );
 }

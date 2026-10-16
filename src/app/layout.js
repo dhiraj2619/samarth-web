@@ -1,11 +1,16 @@
-import { Poppins } from "next/font/google";
+import { Noto_Sans, Roboto } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const notoSans = Noto_Sans({
+  variable: "--font-noto-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata = {
@@ -16,7 +21,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${poppins.variable} h-full antialiased`}>
+    <html lang="en" className={`${notoSans.variable} ${roboto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
         <StoreProvider>{children}</StoreProvider>
       </body>

@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
-import Features from "@/components/Features";
+import TopProducts from "@/components/TopProducts";
+import Categories from "@/components/Categories";
 
 export default function Home() {
   return (
@@ -8,7 +9,8 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <HeroSlider />
-        <Features />
+        <Categories />
+        <TopProducts />
       </main>
     </>
   );

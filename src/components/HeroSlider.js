@@ -47,16 +47,16 @@ export default function HeroSlider() {
 
   return (
     <section
-      className="relative mx-auto mt-3 w-full max-w-[1400px] overflow-hidden sm:rounded-2xl sm:px-0"
+      className="relative w-full overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
     >
-      <div className="relative h-[560px] sm:h-[520px] lg:h-[560px]">
+      <div className="relative grid min-h-[calc(100svh-5rem-1px)]">
         {slides.map((slide, i) => (
           <div
             key={i}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`relative col-start-1 row-start-1 min-w-0 transition-opacity duration-1000 ${
               i === current ? "opacity-100" : "pointer-events-none opacity-0"
             }`}
             aria-hidden={i !== current}
@@ -77,7 +77,7 @@ export default function HeroSlider() {
             <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-earth-400/30 blur-2xl" />
 
             {i === current && (
-              <div className="relative z-10 flex h-full items-center">
+              <div className="relative z-10 flex h-full items-center py-16 sm:py-20">
                 <div className="mx-auto w-full max-w-7xl px-6 sm:px-16 lg:px-20">
                   <div className="max-w-xl">
                     <p className="fade-up mb-4 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-gray-700 sm:text-sm">
@@ -86,7 +86,7 @@ export default function HeroSlider() {
                       {slide.eyebrow[1]}
                     </p>
                     <h1
-                      className="fade-up text-4xl font-bold leading-tight text-brand-700 sm:text-5xl lg:text-[56px]"
+                      className="fade-up text-3xl font-bold leading-tight text-brand-700 sm:text-4xl lg:text-5xl"
                       style={{ animationDelay: "120ms" }}
                     >
                       {slide.title}
@@ -94,7 +94,7 @@ export default function HeroSlider() {
                       <span className="text-earth-500">{slide.highlight}</span>
                     </h1>
                     <p
-                      className="fade-up mt-5 max-w-md text-base leading-relaxed text-gray-700 sm:text-lg"
+                      className="fade-up mt-5 max-w-md text-sm leading-relaxed text-gray-700 sm:text-base"
                       style={{ animationDelay: "240ms" }}
                     >
                       {slide.text}

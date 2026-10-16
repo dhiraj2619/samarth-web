@@ -8,7 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-poppins);
+  --font-sans: var(--font-roboto);
+  --font-heading: var(--font-noto-sans);
 
   /* Samarth brand: green + earthy brown */
   --color-brand-50: #eef7f0;
@@ -32,6 +33,14 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-noto-sans), sans-serif;
+}
+
+p {
+  font-family: var(--font-roboto), sans-serif;
 }
 
 /* WhatsApp icon: periodic ring/wiggle */
@@ -59,4 +68,14 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .wa-icon, .wa-pulse, .fade-up { animation: none; }
+}
+
+/* Panel movement is controlled by Web Animations; backdrop fades independently. */
+@keyframes broadcast-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes broadcast-backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+.broadcast-drawer { will-change: transform, opacity; }
+.broadcast-drawer::backdrop { background: rgb(15 35 25 / .4); animation: broadcast-backdrop-in 520ms ease both; }
+.broadcast-drawer[data-closing="true"]::backdrop { animation: broadcast-backdrop-out 420ms ease both; }
+@media (prefers-reduced-motion: reduce) {
+  .broadcast-drawer::backdrop { animation-duration: 140ms; }
 }
