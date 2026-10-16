@@ -8,16 +8,16 @@ import BroadcastButton from "./BroadcastButton";
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "Categories", href: "#categories" },
-  { label: "Bulk Purchase", href: "#bulk-purchase" },
-  { label: "Our Distributors", href: "#our-distributors" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Categories", href: "/#categories" },
+  { label: "Bulk Purchase", href: "/#bulk-purchase" },
+  { label: "Our Distributors", href: "/#our-distributors" },
+  { label: "Contact Us", href: "/contact" },
 
 ];
 
-export default function Navbar() {
+export default function Navbar({ activeLink = "Home" }) {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("Home");
+  const [active, setActive] = useState(activeLink);
   const drawer = useRef(null);
   const menuButton = useRef(null);
   useEffect(() => {

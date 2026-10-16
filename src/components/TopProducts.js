@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
 
@@ -20,7 +21,6 @@ function ProductImage({ product, large = false }) {
 export default function TopProducts() {
   const [result, setResult] = useState({ items: [], loading: true, error: false });
   const [attempt, setAttempt] = useState(0);
-  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -45,7 +45,7 @@ export default function TopProducts() {
           <h2 id="top-products-title" className="text-2xl font-bold leading-tight tracking-tight text-[#102a2e] sm:text-3xl lg:text-4xl">Trusted Products.<br /><span className="text-[#ee9735]">Growing Together.</span></h2>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-[#6b7e83]">Explore our best-selling range of high-quality products, trusted by businesses for their reliability and value.</p>
         </div>
-        <a href="#categories" className="inline-flex w-fit shrink-0 items-center gap-3 rounded-full border border-brand-600 px-5 py-2.5 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700">Browse all categories <Arrow /></a>
+        <Link href="/#categories" className="inline-flex w-fit shrink-0 items-center gap-3 rounded-full border border-brand-600 px-5 py-2.5 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700">Browse all categories <Arrow /></Link>
       </div>
       {result.loading && <div role="status"><span className="sr-only">Loading top products</span><div aria-hidden="true" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{[0, 1, 2, 3].map(key => <div key={key} className="animate-pulse rounded-xl bg-white p-3 motion-reduce:animate-none"><div className="aspect-square rounded-lg bg-gray-100" /><div className="m-2 mt-5 h-4 w-3/4 rounded bg-gray-100" /><div className="m-2 h-16 rounded bg-gray-50" /></div>)}</div></div>}
       {result.error && <div role="alert" className="rounded-xl border border-brand-100 bg-white p-6 text-sm"><p>We could not load the products. Please try again.</p><button onClick={() => { setResult({ items: [], loading: true, error: false }); setAttempt(value => value + 1); }} className="mt-3 font-semibold text-brand-700">Try again</button></div>}
@@ -55,30 +55,10 @@ export default function TopProducts() {
         <div className="flex flex-1 flex-col px-1 pb-2 pt-4">
           <h3 className="text-base font-semibold leading-snug text-[#193239]">{product.name}</h3>
           <p className="mb-4 mt-2 line-clamp-3 text-sm leading-relaxed text-[#6b7e83]">{product.description}</p>
-          <button type="button" aria-label={`View ${product.name}`} onClick={() => setSelected(product)} className="mt-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#f28c25] text-[#ed831b] transition-colors hover:bg-[#ed831b] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700"><Arrow /></button>
+          <Link href={`/products/${product._id}`} aria-label={`View ${product.name}`} className="mt-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#f28c25] text-[#ed831b] transition-colors hover:bg-[#ed831b] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700"><Arrow /></Link>
         </div>
       </article>)}</div>}
     </div>
-    {selected && <ProductDetails product={selected} onClose={() => setSelected(null)} />}
   </section>;
 }
 
-function ProductDetails({ product, onClose }) {
-  const dialog = useRef(null);
-  useEffect(() => {
-    const element = dialog.current;
-    const trigger = document.activeElement;
-    const previousOverflow = document.body.style.overflow;
-    element.showModal();
-    document.body.style.overflow = "hidden";
-    return () => { element.close(); document.body.style.overflow = previousOverflow; trigger?.focus({ preventScroll: true }); };
-  }, []);
-  return <dialog ref={dialog} aria-labelledby="top-product-detail-title" onCancel={onClose} onClick={event => { if (event.target === event.currentTarget) onClose(); }} className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl border-0 bg-white p-0 text-gray-700 shadow-xl backdrop:bg-black/40">
-    <div className="p-6">
-      <div className="mb-4 flex items-start justify-between gap-4"><h2 id="top-product-detail-title" className="text-xl font-semibold text-brand-800">{product.name}</h2><button autoFocus onClick={onClose} aria-label="Close product details" className="rounded-full px-3 py-1 text-2xl text-brand-700 hover:bg-brand-50">×</button></div>
-      <ProductImage product={product} large />
-      {product.categoryId?.name && <p className="mt-4 text-xs font-medium uppercase tracking-wide text-brand-600">{product.categoryId.name}</p>}
-      <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed">{product.description}</p>
-    </div>
-  </dialog>;
-}

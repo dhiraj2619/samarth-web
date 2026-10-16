@@ -10,10 +10,13 @@ export const ENDPOINTS = {
   categories: "/categories/get-all",
   products: "/products/get-all",
   productById: (id) => `/products/get-by-id/${id}`,
+  productsByCategory: (categoryId) => `/products/get-by-category/${categoryId}`,
+  categoryById: (id) => `/categories/get-by-id/${id}`,
+  settings: "/settings/get",
   collections: "/collections",
   collectionBySlug: (slug) => `/collections/${slug}`,
   banners: "/banners",
-  enquiries: "/enquiries",
+  enquiries: "/enquiries/submit",
 };
 
 export const REQUEST_TIMEOUT_MS = 20000;

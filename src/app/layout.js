@@ -1,6 +1,7 @@
 import { Noto_Sans, Roboto } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
+import Footer from "@/components/Footer";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -23,7 +24,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${notoSans.variable} ${roboto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          {children}
+          <Footer />
+        </StoreProvider>
       </body>
     </html>
   );
