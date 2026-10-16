@@ -115,7 +115,7 @@ export default function Navbar({ activeLink = "Home" }) {
               <Link href={link.href} aria-current={active === link.label ? "location" : undefined}
                 onClick={() => { setActive(link.label); setOpen(false); }}
                 className={"flex items-center justify-between rounded-lg px-4 py-4 text-base font-medium " + (active === link.label ? "bg-brand-50 text-brand-700" : "text-gray-700 hover:bg-brand-50")}>
-                {link.label}<span aria-hidden="true" className="text-brand-500">?</span>
+                {link.label}
               </Link>
             </li>)}
           </ul>
