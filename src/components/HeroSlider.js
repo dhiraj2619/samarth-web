@@ -110,7 +110,7 @@ export default function HeroSlider() {
                         </svg>
                       </Link>
                       <Link
-                        href="#bulk-purchase"
+                        href="/bulk-purchase"
                         className="inline-flex items-center rounded-full border-2 border-brand-600 bg-white/60 px-7 py-3 text-sm font-semibold text-brand-700 transition-all hover:bg-brand-600 hover:text-white"
                       >
                         Request Bulk Quote

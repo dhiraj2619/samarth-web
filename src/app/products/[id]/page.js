@@ -80,9 +80,7 @@ async function ProductDetail({ params }) {
           {product.buyNowUrl && <a href={product.buyNowUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-700 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-brand-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700">
             Buy Now <ExternalIcon />
           </a>}
-          <a href={bulkExternal ? product.bulkPurchaseUrl : "/contact"} {...(bulkExternal && { target: "_blank", rel: "noopener noreferrer" })} className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-[#ee9735] px-7 py-3 text-base font-semibold text-[#c46f12] transition-colors hover:bg-[#ee9735] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ee9735]">
-            Bulk Purchase {bulkExternal && <ExternalIcon />}
-          </a>
+         
         </div>
 
         <div className="mt-8 border-t border-[#f1e6d6] pt-6">

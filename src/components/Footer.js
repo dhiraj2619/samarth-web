@@ -12,7 +12,7 @@ import { WHATSAPP_URL, WhatsAppIcon } from "./WhatsAppButton";
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Categories", href: "/#categories" },
-  { label: "Bulk Purchase", href: "/#bulk-purchase" },
+  { label: "Bulk Purchase", href: "/bulk-purchase" },
   { label: "Our Distributors", href: "/#our-distributors" },
   { label: "Contact Us", href: "/contact" },
 ];

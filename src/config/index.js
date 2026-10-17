@@ -6,6 +6,7 @@ export const API_URL =
 // All backend routes live here, relative to API_URL.
 // TODO: confirm these against the backend — the paths below are placeholders.
 export const ENDPOINTS = {
+  offers: "/offers/get-all",
   ads: "/ads/get-all",
   broadcasts: "/broadcasts/get-all",
   categories: "/categories/get-all",
