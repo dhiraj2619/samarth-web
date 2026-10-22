@@ -2,12 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api, toRejectValue } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
 
-// Hero slider banners
+// Hero slider quote slides (image-only banners managed in the admin)
 export const fetchBanners = createAsyncThunk(
   "banners/fetchAll",
   async (_, { rejectWithValue, signal }) => {
     try {
-      return await api.get(ENDPOINTS.banners, { signal });
+      return await api.get(ENDPOINTS.quoteSlides, { signal });
     } catch (err) {
       return rejectWithValue(toRejectValue(err));
     }

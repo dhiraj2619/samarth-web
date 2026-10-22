@@ -17,7 +17,7 @@ export const ENDPOINTS = {
   settings: "/settings/get",
   collections: "/collections",
   collectionBySlug: (slug) => `/collections/${slug}`,
-  banners: "/banners",
+  quoteSlides: "/settings/quote-slides",
   enquiries: "/enquiries/submit",
 };
 
