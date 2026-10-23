@@ -10,7 +10,7 @@ const links = [
   { label: "Home", href: "/" },
   { label: "Categories", href: "/#categories" },
   { label: "Bulk Purchase", href: "/bulk-purchase" },
-  { label: "Our Distributors", href: "/#our-distributors" },
+  { label: "Our Distributors", href: "/distributors" },
   { label: "Contact Us", href: "/contact" },
 
 ];

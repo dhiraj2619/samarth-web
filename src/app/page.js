@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
 import TopProducts from "@/components/TopProducts";
 import Categories from "@/components/Categories";
+import FAQs from "@/components/FAQs";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <Categories />
         <TopProducts />
         <WellnessVideos />
+        <FAQs />
       </main>
     </>
   );

@@ -19,6 +19,7 @@ export const ENDPOINTS = {
   collectionBySlug: (slug) => `/collections/${slug}`,
   quoteSlides: "/settings/quote-slides",
   enquiries: "/enquiries/submit",
+  distributors: "/distributors/get-all",
 };
 
 export const REQUEST_TIMEOUT_MS = 20000;

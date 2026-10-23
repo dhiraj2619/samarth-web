@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
+import PageHero from "./PageHero";
 
+const BULK_PURCHASE_URL = "https://www.nohar.in/collections/6aab807df72efd444fa68369?name=Samarth";
 const money = value => `₹${Number(value || 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
 const saving = offer => offer.discountType === "PERCENTAGE" ? `${offer.discountValue}% OFF` : `Flat ${money(offer.discountValue)} OFF`;
 function Tag({ className = "h-6 w-6" }) {
@@ -34,12 +36,8 @@ export default function BulkOffers() {
     return () => { cancelled = true; controller.abort(); };
   }, [attempt]);
 
-  return <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-    <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-sm text-gray-500"><Link href="/" className="hover:text-brand-700">Home</Link><span aria-hidden="true">/</span><span className="text-brand-800">Bulk Purchase</span></nav>
-    <header className="mb-8 flex flex-col justify-between gap-6 border-b border-brand-100 pb-8 sm:flex-row sm:items-end">
-      <div><p className="mb-3 flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.18em] text-brand-600"><span className="h-px w-9 bg-[#e99538]" />More value, together</p><h1 className="text-3xl font-bold tracking-tight text-[#17352c] sm:text-4xl">Better offers.<br /><span className="text-[#d58b38]">Bigger possibilities.</span></h1><p className="mt-4 max-w-lg text-sm leading-relaxed text-gray-500">Explore offers for your bulk purchases. View the details, choose an eligible product, and continue shopping on Nohar.</p></div>
-      <Link href="/contact" className="inline-flex w-fit items-center gap-3 rounded-full border border-brand-700 px-5 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50">Need help with a bulk order? <span aria-hidden="true">↗</span></Link>
-    </header>
+  return <><PageHero breadcrumb="Bulk Purchase" eyebrow="More value, together" title="Better offers." highlight="Bigger possibilities." description="Explore offers for your bulk purchases. View the details and eligible products, and continue shopping on Nohar." cta={{ href: "/contact", label: "Need help with a bulk order?" }} />
+  <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
     <div className="mb-5 flex items-center justify-between"><h2 className="text-lg font-semibold text-brand-800">Available offers</h2>{!result.loading && !result.error && <span className="text-xs text-gray-500">{result.items.length} {result.items.length === 1 ? "offer" : "offers"}</span>}</div>
     {result.loading && <div role="status"><span className="sr-only">Loading offers</span><div aria-hidden="true" className="grid gap-5 md:grid-cols-2">{[0, 1, 2, 3].map(key => <div key={key} className="h-44 animate-pulse rounded-2xl bg-white motion-reduce:animate-none" />)}</div></div>}
     {result.error && <div role="alert" className="rounded-2xl border border-brand-100 bg-white p-8 text-center"><p className="text-sm text-gray-500">Offers could not be loaded.</p><button onClick={() => { setResult({ items: [], loading: true, error: false }); setAttempt(value => value + 1); }} className="mt-4 rounded-full bg-brand-700 px-6 py-2 text-sm text-white">Try again</button></div>}
@@ -50,7 +48,7 @@ export default function BulkOffers() {
     </article>)}</div>
     <p className="mt-8 text-center text-xs leading-relaxed text-gray-500">Purchases are completed on Nohar. Contact Samarth Enterprises for assistance with offer eligibility.</p>
     {selected && <OfferDetails offer={selected} onClose={() => setSelected(null)} />}
-  </div>;
+  </div></>;
 }
 
 function OfferDetails({ offer, onClose }) {
@@ -82,47 +80,24 @@ function EligibleProducts({ offer }) {
   const restricted = Boolean(offer.applicableProducts?.length);
   const initial = restricted ? offer.applicableProducts.filter(product => product && typeof product === "object" && product.isActive !== false) : [];
   const [result, setResult] = useState({ items: initial, loading: !restricted, error: false });
-  const [selectedId, setSelectedId] = useState(initial[0]?._id || "");
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     if (restricted) return;
     const controller = new AbortController();
     let cancelled = false;
     allPages(ENDPOINTS.products, controller.signal).then(items => {
-      if (!cancelled) { setResult({ items, loading: false, error: false }); setSelectedId(items[0]?._id || ""); }
+      if (!cancelled) setResult({ items, loading: false, error: false });
     }).catch(() => { if (!cancelled) setResult({ items: [], loading: false, error: true }); });
     return () => { cancelled = true; controller.abort(); };
   }, [restricted, attempt]);
-  return <div className="mt-6"><h3 className="text-base font-semibold text-brand-800">Choose an eligible product</h3><p className="mt-1 text-xs text-gray-500">Buy Now opens the selected product on Nohar.</p>
+  return <div className="mt-6"><h3 className="text-base font-semibold text-brand-800">Eligible products</h3>
     {result.loading && <p role="status" className="mt-4 text-sm text-gray-500">Loading products…</p>}
     {result.error && <p role="alert" className="mt-4 text-sm">Could not load products. <button className="font-semibold text-brand-700" onClick={() => { setResult({ items: [], loading: true, error: false }); setAttempt(value => value + 1); }}>Try again</button></p>}
     {!result.loading && !result.error && !result.items.length && <p className="mt-4 text-sm text-gray-500">No eligible products are currently available. Contact us for assistance.</p>}
-    <div role="radiogroup" aria-label="Eligible products" className="mt-4 flex max-h-52 flex-wrap gap-2 overflow-y-auto">{result.items.map(product => <label key={product._id} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-3 text-sm ${selectedId === product._id ? "border-brand-600 bg-brand-50 text-brand-800" : "border-gray-200 text-gray-600"}`}><input type="radio" name="offer-product" value={product._id} checked={selectedId === product._id} onChange={() => setSelectedId(product._id)} className="accent-brand-600" />{product.name}</label>)}</div>
-    <PurchaseActions key={selectedId || "none"} productId={selectedId} />
+    {result.items.length > 0 && <ul className="mt-3 max-h-52 list-disc space-y-2 overflow-y-auto pl-5 text-sm leading-relaxed text-gray-600">{result.items.map(product => <li key={product._id}>{product.name}</li>)}</ul>}
+    <div className="mt-6 flex flex-col gap-3 border-t border-gray-100 pt-5 sm:flex-row">
+      <a href={BULK_PURCHASE_URL} target="_blank" rel="noopener noreferrer" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800">Bulk Purchase <span aria-hidden="true">↗</span><span className="sr-only"> on Nohar, opens in a new tab</span></a>
+      <Link href="/contact" className="flex flex-1 items-center justify-center rounded-full border border-brand-700 px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50">Contact Us</Link>
+    </div>
   </div>;
-}
-
-function PurchaseActions({ productId }) {
-  const [result, setResult] = useState({ url: null, loading: Boolean(productId), error: false });
-  const [attempt, setAttempt] = useState(0);
-  useEffect(() => {
-    if (!productId) return;
-    let cancelled = false;
-    const controller = new AbortController();
-    api.get(ENDPOINTS.productById(productId), { signal: controller.signal }).then(product => {
-      let url = null;
-      for (const value of [product?.buyNowUrl, product?.bulkPurchaseUrl]) {
-        try {
-          const parsed = new URL(value);
-          if (parsed.protocol === "https:" && ["nohar.in", "www.nohar.in"].includes(parsed.hostname) && parsed.pathname !== "/") { url = parsed.href; break; }
-        } catch { /* No configured product link. */ }
-      }
-      if (!cancelled) setResult({ url, loading: false, error: false });
-    }).catch(() => { if (!cancelled) setResult({ url: null, loading: false, error: true }); });
-    return () => { cancelled = true; controller.abort(); };
-  }, [productId, attempt]);
-  return <div className="mt-6 border-t border-gray-100 pt-5"><div className="flex flex-col gap-3 sm:flex-row">
-    {result.url ? <a href={result.url} target="_blank" rel="noopener noreferrer" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800">Buy Now <span aria-hidden="true">↗</span><span className="sr-only"> on Nohar, opens in a new tab</span></a> : <button disabled className="flex-1 cursor-not-allowed rounded-full bg-gray-100 px-6 py-3 text-sm font-semibold text-gray-400">{result.loading ? "Loading product link…" : "Buy Now"}</button>}
-    <Link href="/contact" className="flex flex-1 items-center justify-center rounded-full border border-brand-700 px-6 py-3 text-sm font-semibold text-brand-700 hover:bg-brand-50">Contact Us</Link>
-  </div>{productId && !result.loading && !result.url && <p className="mt-3 text-xs text-gray-500">{result.error ? <>The product link could not be loaded. <button className="font-semibold text-brand-700" onClick={() => { setResult({ url: null, loading: true, error: false }); setAttempt(value => value + 1); }}>Try again</button></> : "A Nohar product link has not been configured for this item. Please contact us."}</p>}</div>;
 }
