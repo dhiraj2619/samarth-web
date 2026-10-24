@@ -47,14 +47,14 @@ export default function TopProducts() {
         </div>
         <Link href="/#categories" className="inline-flex w-fit shrink-0 items-center gap-3 rounded-full border border-brand-600 px-5 py-2.5 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-700 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700">Browse all categories <Arrow /></Link>
       </div>
-      {result.loading && <div role="status"><span className="sr-only">Loading top products</span><div aria-hidden="true" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{[0, 1, 2, 3].map(key => <div key={key} className="animate-pulse rounded-xl bg-white p-3 motion-reduce:animate-none"><div className="aspect-square rounded-lg bg-gray-100" /><div className="m-2 mt-5 h-4 w-3/4 rounded bg-gray-100" /><div className="m-2 h-16 rounded bg-gray-50" /></div>)}</div></div>}
+      {result.loading && <div role="status"><span className="sr-only">Loading top products</span><div aria-hidden="true" className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">{[0, 1, 2, 3].map(key => <div key={key} className="animate-pulse rounded-xl bg-white p-3 motion-reduce:animate-none"><div className="aspect-square rounded-lg bg-gray-100" /><div className="m-2 mt-5 h-4 w-3/4 rounded bg-gray-100" /><div className="m-2 h-16 rounded bg-gray-50" /></div>)}</div></div>}
       {result.error && <div role="alert" className="rounded-xl border border-brand-100 bg-white p-6 text-sm"><p>We could not load the products. Please try again.</p><button onClick={() => { setResult({ items: [], loading: true, error: false }); setAttempt(value => value + 1); }} className="mt-3 font-semibold text-brand-700">Try again</button></div>}
       {!result.loading && !result.error && !result.items.length && <p className="rounded-xl border border-brand-100 bg-white p-6 text-sm text-gray-500">Our top product selection is coming soon. Explore our categories to browse the range.</p>}
-      {!!result.items.length && <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{result.items.map(product => <article key={product._id} className="group flex flex-col rounded-xl border border-white bg-white/80 p-3 shadow-[0_8px_28px_-15px_rgba(34,65,45,0.2)] transition-shadow hover:shadow-lg">
+      {!!result.items.length && <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">{result.items.map(product => <article key={product._id} className="group flex flex-col rounded-xl border border-white bg-white/80 p-2 sm:p-3 shadow-[0_8px_28px_-15px_rgba(34,65,45,0.2)] transition-shadow hover:shadow-lg">
         <ProductImage product={product} />
         <div className="flex flex-1 flex-col px-1 pb-2 pt-4">
-          <h3 className="text-base font-semibold leading-snug text-[#193239]">{product.name}</h3>
-          <p className="mb-4 mt-2 line-clamp-3 text-sm leading-relaxed text-[#6b7e83]">{product.description}</p>
+          <h3 className="text-sm font-semibold leading-snug sm:text-base text-[#193239]">{product.name}</h3>
+          <p className="mb-4 mt-2 line-clamp-2 text-xs leading-relaxed sm:line-clamp-3 sm:text-sm text-[#6b7e83]">{product.description}</p>
           <Link href={`/products/${product._id}`} aria-label={`View ${product.name}`} className="mt-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#f28c25] text-[#ed831b] transition-colors hover:bg-[#ed831b] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700"><Arrow /></Link>
         </div>
       </article>)}</div>}

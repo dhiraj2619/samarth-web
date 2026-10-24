@@ -52,7 +52,7 @@ async function CategoryProducts({ params }) {
     </p>
 
     {products.length
-      ? <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      ? <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
         {products.map(product => <li key={product._id}><ProductCard product={product} /></li>)}
       </ul>
       : <div className="mt-8 rounded-2xl border border-[#e2dfd6] bg-white p-8 text-center">
@@ -68,7 +68,7 @@ function CategorySkeleton() {
     <div aria-hidden="true">
       <div className="mb-6 h-4 w-48 animate-pulse rounded bg-gray-200 motion-reduce:animate-none" />
       <div className="h-9 w-64 animate-pulse rounded bg-gray-200 motion-reduce:animate-none" />
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
         {[0, 1, 2, 3].map(key => <div key={key} className="rounded-2xl border border-[#f1e6d6] bg-white p-5"><div className="aspect-square animate-pulse rounded-xl bg-gray-100 motion-reduce:animate-none" /><div className="mt-5 h-5 w-3/4 rounded bg-gray-100" /><div className="mt-3 h-12 rounded bg-gray-50" /></div>)}
       </div>
     </div>

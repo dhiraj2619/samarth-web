@@ -29,7 +29,7 @@ export default function HeroSlider() {
   }, [paused, next, current, count]);
 
   if (status === "idle" || status === "loading") {
-    return <div className="aspect-2048/768 w-full animate-pulse bg-brand-50" aria-hidden />;
+    return <div className="aspect-2/1 w-full animate-pulse bg-brand-50 sm:aspect-2048/768" aria-hidden />;
   }
   if (count === 0) return null;
 
@@ -42,7 +42,7 @@ export default function HeroSlider() {
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
     >
-      <div className="relative grid aspect-2048/768 w-full">
+      <div className="relative grid aspect-2/1 w-full sm:aspect-2048/768">
         {slides.map((slide, i) => (
           <div
             key={slide._id ?? i}

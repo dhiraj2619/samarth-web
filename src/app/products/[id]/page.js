@@ -101,7 +101,7 @@ async function ProductDetail({ params }) {
         <h2 id="related-title" className="text-2xl font-semibold tracking-tight text-[#102a2e]">More from {category.name}</h2>
         <Link href={`/categories/${category._id}`} className="shrink-0 text-sm font-semibold text-brand-700 hover:text-brand-800">View all</Link>
       </div>
-      <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
         {related.map(item => <li key={item._id}><ProductCard product={item} /></li>)}
       </ul>
     </section>}
