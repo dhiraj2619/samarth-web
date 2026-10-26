@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchCategories } from "@/store/slices/categoriesSlice";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
-import { WHATSAPP_URL, WhatsAppIcon } from "./WhatsAppButton";
+import { PHONE_DISPLAY, PHONE_NUMBER, WHATSAPP_URL, WhatsAppIcon } from "./WhatsAppButton";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -54,7 +54,6 @@ export default function Footer() {
   }, []);
 
   const social = profile?.socialLinks || {};
-  const whatsapp = social.whatsapp || WHATSAPP_URL;
 
   return <footer className="mt-auto bg-brand-800 text-[15px] text-white/75">
     <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-12 lg:px-8 lg:py-16">
@@ -63,7 +62,7 @@ export default function Footer() {
           <Image src="/logo/samarthlogo.png" alt="Samarth Enterprises" width={2048} height={768} className="h-11 w-auto" />
         </Link>
         <p className="mt-5 max-w-xs leading-relaxed">Reliable products for a healthier tomorrow. Quality wellness, beauty and personal-care products for homes and businesses.</p>
-        <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-whatsapp-dark">
+        <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-whatsapp-dark">
           <WhatsAppIcon className="h-5 w-5" /> Chat on WhatsApp
         </a>
       </div>
@@ -87,7 +86,7 @@ export default function Footer() {
       <div>
         <Heading>Get in Touch</Heading>
         <ul className="mt-5 space-y-4">
-          {profile?.phone && <ContactRow icon={ICONS.phone}><a href={`tel:${profile.phone.replace(/\s/g, "")}`} className="hover:text-white">{profile.phone}</a></ContactRow>}
+          <ContactRow icon={ICONS.phone}><a href={`tel:+91${PHONE_NUMBER}`} className="hover:text-white">{PHONE_DISPLAY}</a></ContactRow>
           {profile?.email && <ContactRow icon={ICONS.mail}><a href={`mailto:${profile.email}`} className="hover:text-white">{profile.email}</a></ContactRow>}
           {profile?.address && <ContactRow icon={ICONS.pin}><span className="whitespace-pre-line">{profile.address}</span></ContactRow>}
           <ContactRow icon={ICONS.mail}><Link href="/contact" className="font-medium text-white underline-offset-4 hover:underline">Send us an enquiry</Link></ContactRow>

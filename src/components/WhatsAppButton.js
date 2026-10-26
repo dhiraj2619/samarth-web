@@ -1,5 +1,7 @@
-// Replace with the real business number (country code + number, digits only)
-export const WHATSAPP_NUMBER = "919999999999";
+// Business mobile and WhatsApp number used across the site
+export const PHONE_NUMBER = "9588655608";
+export const PHONE_DISPLAY = "+91 95886 55608";
+export const WHATSAPP_NUMBER = `91${PHONE_NUMBER}`;
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   "Hello Samarth Enterprises, I would like to know more about your products."
 )}`;
