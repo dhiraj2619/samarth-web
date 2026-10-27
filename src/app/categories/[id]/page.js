@@ -8,10 +8,13 @@ import { getCategory, getCategoryProducts } from "@/lib/catalog";
 export async function generateMetadata({ params }) {
   const { id } = await params;
   const category = await getCategory(id).catch(() => null);
-  if (!category) return { title: "Category not found | Samarth Enterprises" };
+  if (!category) return { title: "Category not found | Samarth Enterprises", robots: { index: false } };
+  const description = category.description || `Explore ${category.name} from Samarth Enterprises.`;
   return {
     title: `${category.name} | Samarth Enterprises`,
-    description: category.description || `Explore ${category.name} from Samarth Enterprises.`,
+    description,
+    alternates: { canonical: `/categories/${id}` },
+    openGraph: { title: category.name, description, url: `/categories/${id}` },
   };
 }
 

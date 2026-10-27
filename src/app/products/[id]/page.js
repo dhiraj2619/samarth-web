@@ -6,11 +6,12 @@ import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import { getCategoryProducts, getProduct } from "@/lib/catalog";
+import { SITE_NAME, SITE_URL } from "@/config";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
   const product = await getProduct(id).catch(() => null);
-  if (!product) return { title: "Product not found | Samarth Enterprises" };
+  if (!product) return { title: "Product not found | Samarth Enterprises", robots: { index: false } };
   const description = product.seo?.metaDescription || product.description?.slice(0, 160);
   const image = product.socialShare?.ogImageUrl || product.images?.[0]?.url;
   return {
@@ -18,8 +19,9 @@ export async function generateMetadata({ params }) {
     description,
     keywords: product.seo?.keywords || undefined,
     robots: product.seo?.metaRobots || undefined,
-    alternates: product.seo?.canonicalUrl ? { canonical: product.seo.canonicalUrl } : undefined,
+    alternates: { canonical: product.seo?.canonicalUrl || `/products/${id}` },
     openGraph: {
+      url: `/products/${id}`,
       title: product.socialShare?.ogTitle || product.name,
       description: product.socialShare?.ogDescription || description,
       images: image ? [image] : undefined,
@@ -54,8 +56,20 @@ async function ProductDetail({ params }) {
     ? (await getCategoryProducts(category._id).catch(() => [])).filter(item => item._id !== product._id).slice(0, 4)
     : [];
   const bulkExternal = Boolean(product.bulkPurchaseUrl);
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.seo?.metaDescription || product.description?.slice(0, 500),
+    image: (product.images || []).map(image => image.url).filter(Boolean),
+    url: `${SITE_URL}/products/${product._id}`,
+    brand: { "@type": "Brand", name: SITE_NAME },
+    category: category?.name,
+  };
 
   return <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {/* "<" is escaped so text from the backend cannot close the script tag. */}
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd).replace(/</g, "\\u003c") }} />
     <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
       <ol className="flex flex-wrap items-center gap-2">
         <li><Link href="/" className="hover:text-brand-700">Home</Link></li>

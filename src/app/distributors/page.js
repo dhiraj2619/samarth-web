@@ -4,6 +4,7 @@ import Distributors from "@/components/Distributors";
 export const metadata = {
   title: "Our Distributors | Samarth Enterprises",
   description: "Find a Samarth Enterprises distributor near you and contact them directly.",
+  alternates: { canonical: "/distributors" },
 };
 
 export default function DistributorsPage() {

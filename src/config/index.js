@@ -23,3 +23,8 @@ export const ENDPOINTS = {
 };
 
 export const REQUEST_TIMEOUT_MS = 20000;
+
+// Public address of this website, used for canonical URLs, sitemap.xml and robots.txt.
+// TODO: set NEXT_PUBLIC_SITE_URL to the live domain (no trailing slash).
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.shrisamarth.com").replace(/\/$/, "");
+export const SITE_NAME = "Samarth Enterprises";

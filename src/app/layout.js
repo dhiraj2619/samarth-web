@@ -2,6 +2,7 @@ import { Noto_Sans, Roboto } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
 import Footer from "@/components/Footer";
+import { SITE_NAME, SITE_URL } from "@/config";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -14,16 +15,42 @@ const roboto = Roboto({
   display: "swap",
 });
 
+const DESCRIPTION =
+  "Samarth Enterprises offers a wide range of quality products for your business needs. Explore our collections and connect with us for bulk requirements.";
+
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Samarth Enterprises | Reliable Products for a Healthier Tomorrow",
-  description:
-    "Samarth Enterprises offers a wide range of quality products for your business needs. Explore our collections and connect with us for bulk requirements.",
+  description: DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: ["Samarth Enterprises", "wellness products", "bulk purchase", "distributors", "healthy products"],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_IN",
+    url: "/",
+    title: "Samarth Enterprises | Reliable Products for a Healthier Tomorrow",
+    description: DESCRIPTION,
+    images: [{ url: "/logo/samarthlogo.png", width: 2048, height: 768, alt: SITE_NAME }],
+  },
+  twitter: { card: "summary_large_image" },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo/samarthlogo.png`,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${notoSans.variable} ${roboto.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <StoreProvider>
           {children}
           <Footer />

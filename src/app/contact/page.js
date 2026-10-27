@@ -4,6 +4,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata = {
   title: "Contact Us | Samarth Enterprises",
   description: "Get in touch with Samarth Enterprises for product enquiries and bulk requirements.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

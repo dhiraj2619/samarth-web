@@ -4,6 +4,7 @@ import BulkOffers from "@/components/BulkOffers";
 export const metadata = {
   title: "Bulk Purchase Offers | Samarth Enterprises",
   description: "Explore bulk purchase offers, eligible products and minimum order amounts from Samarth Enterprises.",
+  alternates: { canonical: "/bulk-purchase" },
 };
 
 export default function BulkPurchasePage() {
