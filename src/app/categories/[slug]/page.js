@@ -1,20 +1,21 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
-import { getCategory, getCategoryProducts } from "@/lib/catalog";
+import { findCategory, getCategoryProducts } from "@/lib/catalog";
+import { categoryPath } from "@/lib/slug";
 
 export async function generateMetadata({ params }) {
-  const { id } = await params;
-  const category = await getCategory(id).catch(() => null);
+  const { slug } = await params;
+  const category = await findCategory(slug).catch(() => null);
   if (!category) return { title: "Category not found | Samarth Enterprises", robots: { index: false } };
   const description = category.description || `Explore ${category.name} from Samarth Enterprises.`;
   return {
     title: `${category.name} | Samarth Enterprises`,
     description,
-    alternates: { canonical: `/categories/${id}` },
-    openGraph: { title: category.name, description, url: `/categories/${id}` },
+    alternates: { canonical: categoryPath(category) },
+    openGraph: { title: category.name, description, url: categoryPath(category) },
   };
 }
 
@@ -32,10 +33,12 @@ export default function CategoryPage({ params }) {
 }
 
 async function CategoryProducts({ params }) {
-  const { id } = await params;
-  const category = await getCategory(id);
+  const { slug } = await params;
+  const category = await findCategory(slug);
   if (!category) notFound();
-  const products = await getCategoryProducts(id);
+  // Old id-based links and renamed categories move to the current slug.
+  if (categoryPath(category) !== `/categories/${slug}`) permanentRedirect(categoryPath(category));
+  const products = await getCategoryProducts(category._id);
 
   return <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">

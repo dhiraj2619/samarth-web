@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/imageLoader";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchBanners, selectBanners, selectBannersStatus } from "@/store/slices/bannersSlice";
 
@@ -52,7 +53,7 @@ export default function HeroSlider() {
             aria-hidden={i !== active}
           >
             <Image
-              unoptimized
+              loader={cloudinaryLoader}
               src={slide.image.url}
               alt={`Samarth slide ${i + 1}`}
               fill

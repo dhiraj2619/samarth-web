@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/imageLoader";
 import Link from "next/link";
+import { categoryPath } from "@/lib/slug";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchCategories } from "@/store/slices/categoriesSlice";
 
@@ -19,7 +21,7 @@ function Thumbnail({ category }) {
   const initials = category.name.split(/\s+/).filter(word => /\w/.test(word)).slice(0, 2).map(word => word[0]).join("").toUpperCase();
   return <span className="relative block aspect-square w-full overflow-hidden rounded-xl bg-[#f3f1ea]">
     {src && !failed
-      ? <Image unoptimized src={src} alt="" fill sizes="(min-width: 1024px) 240px, (min-width: 640px) 33vw, 50vw" onError={() => setFailed(true)} className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
+      ? <Image loader={cloudinaryLoader} src={src} alt="" fill sizes="(min-width: 1024px) 240px, (min-width: 640px) 33vw, 50vw" onError={() => setFailed(true)} className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
       : <span aria-hidden="true" className="flex h-full items-center justify-center bg-brand-50 text-3xl font-semibold text-brand-700">{initials}</span>}
   </span>;
 }
@@ -27,7 +29,7 @@ function Thumbnail({ category }) {
 function CategoryCard({ category }) {
   return <li className={SLIDE}>
     <Link
-      href={`/categories/${category._id}`}
+      href={categoryPath(category)}
       title={category.name}
       className="group flex h-full flex-col rounded-2xl border border-[#ece9df] bg-white p-3 shadow-[0_4px_20px_-10px_rgba(16,33,46,0.2)] transition duration-300 hover:-translate-y-1 hover:border-brand-500/40 hover:shadow-[0_18px_36px_-16px_rgba(34,65,45,0.4)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 motion-reduce:transform-none"
     >

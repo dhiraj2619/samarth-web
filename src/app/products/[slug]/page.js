@@ -1,16 +1,18 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
-import { getCategoryProducts, getProduct } from "@/lib/catalog";
+import { findProduct, getCategoryProducts } from "@/lib/catalog";
+import { categoryPath, productPath } from "@/lib/slug";
 import { SITE_NAME, SITE_URL } from "@/config";
+import { cloudinaryUrl } from "@/lib/imageLoader";
 
 export async function generateMetadata({ params }) {
-  const { id } = await params;
-  const product = await getProduct(id).catch(() => null);
+  const { slug } = await params;
+  const product = await findProduct(slug).catch(() => null);
   if (!product) return { title: "Product not found | Samarth Enterprises", robots: { index: false } };
   const description = product.seo?.metaDescription || product.description?.slice(0, 160);
   const image = product.socialShare?.ogImageUrl || product.images?.[0]?.url;
@@ -19,9 +21,9 @@ export async function generateMetadata({ params }) {
     description,
     keywords: product.seo?.keywords || undefined,
     robots: product.seo?.metaRobots || undefined,
-    alternates: { canonical: product.seo?.canonicalUrl || `/products/${id}` },
+    alternates: { canonical: product.seo?.canonicalUrl || productPath(product) },
     openGraph: {
-      url: `/products/${id}`,
+      url: productPath(product),
       title: product.socialShare?.ogTitle || product.name,
       description: product.socialShare?.ogDescription || description,
       images: image ? [image] : undefined,
@@ -47,9 +49,11 @@ function ExternalIcon() {
 }
 
 async function ProductDetail({ params }) {
-  const { id } = await params;
-  const product = await getProduct(id);
+  const { slug } = await params;
+  const product = await findProduct(slug);
   if (!product) notFound();
+  // Old id-based links and renamed products move to the current slug.
+  if (productPath(product) !== `/products/${slug}`) permanentRedirect(productPath(product));
 
   const category = product.categoryId;
   const related = category?._id
@@ -62,7 +66,7 @@ async function ProductDetail({ params }) {
     name: product.name,
     description: product.seo?.metaDescription || product.description?.slice(0, 500),
     image: (product.images || []).map(image => image.url).filter(Boolean),
-    url: `${SITE_URL}/products/${product._id}`,
+    url: `${SITE_URL}${productPath(product)}`,
     brand: { "@type": "Brand", name: SITE_NAME },
     category: category?.name,
   };
@@ -73,7 +77,7 @@ async function ProductDetail({ params }) {
     <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500">
       <ol className="flex flex-wrap items-center gap-2">
         <li><Link href="/" className="hover:text-brand-700">Home</Link></li>
-        {category?._id && <><li aria-hidden="true">/</li><li><Link href={`/categories/${category._id}`} className="hover:text-brand-700">{category.name}</Link></li></>}
+        {category?._id && <><li aria-hidden="true">/</li><li><Link href={categoryPath(category)} className="hover:text-brand-700">{category.name}</Link></li></>}
         <li aria-hidden="true">/</li>
         <li aria-current="page" className="line-clamp-1 text-gray-700">{product.name}</li>
       </ol>
@@ -106,14 +110,14 @@ async function ProductDetail({ params }) {
     {product.guideImage?.url && <section aria-labelledby="guide-title" className="mt-8 rounded-2xl bg-white p-5 sm:p-8">
       <h2 id="guide-title" className="text-xl font-semibold text-brand-800">How to use</h2>
       <div className="relative mt-5 aspect-[16/9] overflow-hidden rounded-xl bg-[#f8f7f2]">
-        <Image unoptimized src={product.guideImage.url} alt={`How to use ${product.name}`} fill sizes="(max-width: 1280px) 100vw, 1200px" className="object-contain" />
+        <Image unoptimized src={cloudinaryUrl(product.guideImage.url, 1600)} alt={`How to use ${product.name}`} fill sizes="(max-width: 1280px) 100vw, 1200px" className="object-contain" />
       </div>
     </section>}
 
     {related.length > 0 && <section aria-labelledby="related-title" className="mt-12">
       <div className="flex items-end justify-between gap-4">
         <h2 id="related-title" className="text-2xl font-semibold tracking-tight text-[#102a2e]">More from {category.name}</h2>
-        <Link href={`/categories/${category._id}`} className="shrink-0 text-sm font-semibold text-brand-700 hover:text-brand-800">View all</Link>
+        <Link href={categoryPath(category)} className="shrink-0 text-sm font-semibold text-brand-700 hover:text-brand-800">View all</Link>
       </div>
       <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
         {related.map(item => <li key={item._id}><ProductCard product={item} /></li>)}

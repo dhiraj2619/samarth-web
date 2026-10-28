@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/imageLoader";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
 
@@ -115,7 +116,7 @@ function BroadcastList() {
     const link = safeUrl(item.link);
     const date = new Date(item.createdAt);
     return <article key={item._id} className="overflow-hidden rounded-xl border border-brand-100 bg-white">
-      {image && <Image unoptimized src={image} alt={item.title || "Broadcast image"} width={800} height={500} className="h-auto max-h-80 w-full object-contain" />}
+      {image && <Image loader={cloudinaryLoader} src={image} alt={item.title || "Broadcast image"} width={800} height={500} className="h-auto max-h-80 w-full object-contain" />}
       <div className="p-5">
         {!Number.isNaN(date.getTime()) && <time dateTime={date.toISOString()} className="text-xs text-gray-500">{date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" })}</time>}
         <h3 className="mt-2 break-words text-lg font-semibold text-brand-800">{item.title}</h3>

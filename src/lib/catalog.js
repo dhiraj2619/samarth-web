@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
+import { recordSlug } from "@/lib/slug";
 
 // Server-side catalogue reads for the product and category pages, cached for a few minutes.
 // They return null for a missing or invalid id so the page can show its not-found state.
@@ -41,17 +42,34 @@ async function getAll(path) {
   return records;
 }
 
-// Used by sitemap.xml, so it is cached for longer than the page reads.
+// Used by sitemap.xml and to look up records by slug, so a new record is reachable
+// within a few minutes.
 export async function getAllCategories() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("minutes");
   return getAll(ENDPOINTS.categories);
 }
 
 export async function getAllProducts() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("minutes");
   return getAll(ENDPOINTS.products);
+}
+
+// Page lookups by URL segment. The segment is normally a slug made from the name; an old
+// id-based link (/products/<id>) still resolves so the page can redirect it to the slug.
+const OBJECT_ID = /^[a-f\d]{24}$/i;
+
+export async function findCategory(segment) {
+  if (OBJECT_ID.test(segment)) return getCategory(segment);
+  const match = (await getAllCategories()).find(category => recordSlug(category) === segment);
+  return match ? getCategory(match._id) : null;
+}
+
+export async function findProduct(segment) {
+  if (OBJECT_ID.test(segment)) return getProduct(segment);
+  const match = (await getAllProducts()).find(product => recordSlug(product) === segment);
+  return match ? getProduct(match._id) : null;
 }
 
 export async function getCategoryProducts(categoryId) {

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/imageLoader";
 import Link from "next/link";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
@@ -42,7 +43,7 @@ function Logo({ distributor }) {
   const initials = distributor.companyName.split(/\s+/).slice(0, 2).map(word => word[0]).join("").toUpperCase();
   return <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-[#efe9dc] bg-white">
     {src && !failed
-      ? <Image unoptimized src={src} alt="" fill sizes="64px" onError={() => setFailed(true)} className="object-contain p-1.5" />
+      ? <Image loader={cloudinaryLoader} src={src} alt="" fill sizes="64px" onError={() => setFailed(true)} className="object-contain p-1.5" />
       : <span aria-hidden="true" className="flex h-full items-center justify-center bg-brand-50 text-lg font-semibold text-brand-700">{initials}</span>}
   </div>;
 }

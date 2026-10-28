@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/imageLoader";
 import Link from "next/link";
+import { productPath } from "@/lib/slug";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
 
@@ -14,7 +16,7 @@ function ProductImage({ product, large = false }) {
   const [failed, setFailed] = useState(false);
   const src = product.images?.[0]?.url;
   return <div className={`relative overflow-hidden rounded-lg bg-[#f1eee5] ${large ? "aspect-[4/3]" : "aspect-square"}`}>
-    {src && !failed ? <Image unoptimized src={src} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" onError={() => setFailed(true)} className="object-contain p-2 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" /> : <div className="flex h-full items-center justify-center text-sm text-brand-700">Samarth Enterprises</div>}
+    {src && !failed ? <Image loader={cloudinaryLoader} src={src} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" onError={() => setFailed(true)} className="object-contain p-2 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" /> : <div className="flex h-full items-center justify-center text-sm text-brand-700">Samarth Enterprises</div>}
   </div>;
 }
 
@@ -55,7 +57,7 @@ export default function TopProducts() {
         <div className="flex flex-1 flex-col px-1 pb-2 pt-4">
           <h3 className="text-sm font-semibold leading-snug sm:text-base text-[#193239]">{product.name}</h3>
           <p className="mb-4 mt-2 line-clamp-2 text-xs leading-relaxed sm:line-clamp-3 sm:text-sm text-[#6b7e83]">{product.description}</p>
-          <Link href={`/products/${product._id}`} aria-label={`View ${product.name}`} className="mt-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#f28c25] text-[#ed831b] transition-colors hover:bg-[#ed831b] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700"><Arrow /></Link>
+          <Link href={productPath(product)} aria-label={`View ${product.name}`} className="mt-auto flex h-9 w-9 items-center justify-center rounded-full border border-[#f28c25] text-[#ed831b] transition-colors hover:bg-[#ed831b] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700"><Arrow /></Link>
         </div>
       </article>)}</div>}
     </div>

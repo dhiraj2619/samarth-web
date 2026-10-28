@@ -44,10 +44,10 @@ export default function Navbar({ activeLink = "Home" }) {
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="shrink-0" aria-label="Samarth Enterprises home">
           <Image
-            src="/logo/samarthlogo.png"
+            src="/logo/samarthlogo-640.png"
             alt="Samarth Enterprises"
-            width={2048}
-            height={768}
+            width={640}
+            height={240}
             priority
             className="h-12 w-auto sm:h-14"
           />

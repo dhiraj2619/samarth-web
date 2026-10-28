@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/imageLoader";
 import { api } from "@/lib/apiClient";
 import { ENDPOINTS } from "@/config";
 
@@ -102,7 +103,7 @@ function AdCard({ ad, onSelect }) {
   return <article className="min-w-0 shrink-0 basis-full snap-start sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]">
     <button type="button" onClick={() => onSelect(ad)} aria-label={`${source ? "Play" : "View"} ${ad.title}`} className="group block w-full overflow-hidden rounded-2xl border border-[#e5eae4] bg-white text-left shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-brand-600">
       <div className="relative aspect-video bg-brand-50">
-        {poster && !imageFailed ? <Image unoptimized src={poster} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" onError={() => setImageFailed(true)} className="object-cover" /> : <span className="absolute inset-0 flex items-center justify-center px-12 text-center font-heading text-xl font-semibold text-brand-700">Samarth Enterprises</span>}
+        {poster && !imageFailed ? <Image loader={cloudinaryLoader} src={poster} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" onError={() => setImageFailed(true)} className="object-cover" /> : <span className="absolute inset-0 flex items-center justify-center px-12 text-center font-heading text-xl font-semibold text-brand-700">Samarth Enterprises</span>}
         {source && <><span className="absolute inset-0 bg-black/20" /><span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-brand-500 shadow-lg transition-transform group-hover:scale-110"><svg aria-hidden="true" width="25" height="25" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.8c0-1 1.1-1.6 1.9-1.1l12 7.2a1.3 1.3 0 0 1 0 2.2l-12 7.2A1.3 1.3 0 0 1 7 19.2Z" /></svg></span></>}
       </div>
       <h3 className="px-5 py-5 text-base font-medium text-[#18342c]">{ad.title}</h3>
@@ -125,7 +126,7 @@ function AdPlayer({ ad, onClose }) {
     <div><div className="flex items-center justify-between gap-4 px-5 py-4"><h2 id="wellness-player-title" className="text-lg font-semibold text-brand-800">{ad.title}</h2><button type="button" autoFocus aria-label="Close video" onClick={onClose} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-2xl text-brand-800 hover:bg-brand-50">×</button></div>
       {source?.type === "youtube" ? <iframe src={source.src} title={ad.title} allow="autoplay; encrypted-media; picture-in-picture" allowFullScreen className="aspect-video w-full border-0 bg-black" />
         : source?.type === "video" && !failed ? <video controls autoPlay playsInline onError={() => setFailed(true)} src={source.src} aria-label={ad.title} className="aspect-video w-full bg-black" />
-          : <div className="p-5">{ad.image?.url && <Image unoptimized src={ad.image.url} alt={ad.title} width={900} height={600} className="h-auto w-full rounded-lg" />}{failed && <p role="alert" className="mt-3 text-sm text-gray-600">The video could not be played here.</p>}{source && <a href={source.src} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-full bg-brand-700 px-5 py-3 text-sm text-white">Open video in a new tab</a>}{!source && !ad.image?.url && <p className="text-sm text-gray-500">More information coming soon.</p>}</div>}
+          : <div className="p-5">{ad.image?.url && <Image loader={cloudinaryLoader} src={ad.image.url} alt={ad.title} width={900} height={600} className="h-auto w-full rounded-lg" />}{failed && <p role="alert" className="mt-3 text-sm text-gray-600">The video could not be played here.</p>}{source && <a href={source.src} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-full bg-brand-700 px-5 py-3 text-sm text-white">Open video in a new tab</a>}{!source && !ad.image?.url && <p className="text-sm text-gray-500">More information coming soon.</p>}</div>}
     </div>
   </dialog>;
 }

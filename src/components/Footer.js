@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { categoryPath } from "@/lib/slug";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchCategories } from "@/store/slices/categoriesSlice";
 import { api } from "@/lib/apiClient";
@@ -59,7 +60,7 @@ export default function Footer() {
     <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-12 lg:px-8 lg:py-16">
       <div>
         <Link href="/" aria-label="Samarth Enterprises home" className="inline-block rounded-xl bg-white px-4 py-2">
-          <Image src="/logo/samarthlogo.png" alt="Samarth Enterprises" width={2048} height={768} className="h-11 w-auto" />
+          <Image src="/logo/samarthlogo-640.png" alt="Samarth Enterprises" width={640} height={240} className="h-11 w-auto" />
         </Link>
         <p className="mt-5 max-w-xs leading-relaxed">Reliable products for a healthier tomorrow. Quality wellness, beauty and personal-care products for homes and businesses.</p>
         <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-whatsapp-dark">
@@ -78,7 +79,7 @@ export default function Footer() {
         <Heading><span id="footer-categories">Categories</span></Heading>
         <ul className="mt-5 space-y-3">
           {categories.length
-            ? categories.slice(0, 8).map(category => <li key={category._id}><Link href={`/categories/${category._id}`} className="transition-colors hover:text-white">{category.name}</Link></li>)
+            ? categories.slice(0, 8).map(category => <li key={category._id}><Link href={categoryPath(category)} className="transition-colors hover:text-white">{category.name}</Link></li>)
             : <li><Link href="/#categories" className="transition-colors hover:text-white">Browse all categories</Link></li>}
         </ul>
       </nav>
